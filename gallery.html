@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Clicks – Capermax</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Artistic Background -->
+    <div class="texture"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+
+    <!-- Header -->
+    <header class="gallery-header">
+        <h1>My Clicks</h1>
+        <p class="gallery-sub">Moments captured through my lens</p>
+        <a href="index.html" class="back-btn">← Back to Home</a>
+    </header>
+
+    <!-- Gallery -->
+    <section class="gallery">
+        <img src="images/IMGW1.jpeg"
+             data-title="Whispers of Green"
+             data-desc="A dense weave of fresh green leaves, layered and flowing like quiet waves.">
+
+        <img src="images/IMGW2.jpeg"
+             data-title="Stillness Between Stones"
+             data-desc="A calm lake embraced by rugged stone cliffs, quiet and timeless.">
+
+        <img src="images/IMGW3.jpeg"
+             data-title="Waiting for the Stormlight"
+             data-desc="A dramatic sky holding its breath between light and darkness.">
+
+        <img src="images/IMGW4.jpeg"
+             data-title="Where the Earth Meets the Sky"
+             data-desc="Standing high above the land, watching the world breathe in silence.">
+
+        <img src="images/IMGW5.jpeg"
+             data-title="Mist Over the Quiet River"
+             data-desc="Morning fog drifts gently across a calm flowing river.">
+
+        <img src="images/IMGW6.jpeg"
+             data-title="Layers of Silence"
+             data-desc="Soft mountain ridges fading gently into mist and light.">
+
+        <img src="images/IMGW7.jpeg"
+             data-title="Where Water Meets Will"
+             data-desc="Nature and engineering blending in calm harmony.">
+
+        <img src="images/IMGW8.jpeg"
+             data-title="Between Light and Self"
+             data-desc="A quiet moment of reflection against glowing city lights.">
+
+        <img src="images/IMGW9.jpeg"
+             data-title="Midnight Momentum"
+             data-desc="A night ride captured between motion and solitude.">
+
+        <img src="images/IMGW10.jpeg"
+             data-title="Before the Ride Continues"
+             data-desc="A pause before the road calls again.">
+    </section>
+
+    <!-- Image Viewer Modal -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-btn">&times;</span>
+        <span class="nav prev">&#10094;</span>
+        <span class="nav next">&#10095;</span>
+
+        <img id="modalImage">
+
+        <div class="modal-text">
+            <h2 id="modalTitle"></h2>
+            <p id="modalDesc"></p>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Capermax
+    </footer>
+
+    <!-- JavaScript (MUST be last) -->
+    <script>
+        const images = document.querySelectorAll(".gallery img");
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDesc = document.getElementById("modalDesc");
+        const closeBtn = document.querySelector(".close-btn");
+        const nextBtn = document.querySelector(".next");
+        const prevBtn = document.querySelector(".prev");
+
+        let currentIndex = 0;
+
+        function showImage(index) {
+            const img = images[index];
+            modalImg.src = img.src;
+            modalTitle.textContent = img.dataset.title;
+            modalDesc.textContent = img.dataset.desc;
+        }
+
+        images.forEach((img, index) => {
+            img.addEventListener("click", () => {
+                currentIndex = index;
+                modal.style.display = "flex";
+                showImage(currentIndex);
+            });
+        });
+
+        nextBtn.onclick = () => {
+            currentIndex = (currentIndex + 1) % images.length;
+            showImage(currentIndex);
+        };
+
+        prevBtn.onclick = () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(currentIndex);
+        };
+
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+        };
+
+        /* Keyboard navigation */
+        document.addEventListener("keydown", (e) => {
+            if (modal.style.display !== "flex") return;
+
+            if (e.key === "ArrowRight") {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+            }
+
+            if (e.key === "ArrowLeft") {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex);
+            }
+
+            if (e.key === "Escape") {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+<script>
+let startX = 0;
+
+modal.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+});
+
+modal.addEventListener("touchend", (e) => {
+    let endX = e.changedTouches[0].clientX;
+    let diff = startX - endX;
+
+    if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+            // swipe left → next
+            currentIndex = (currentIndex + 1) % images.length;
+        } else {
+            // swipe right → previous
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+        }
+        showImage(currentIndex);
+    }
+});
+</script>
+
+
+</body>
+</html>
